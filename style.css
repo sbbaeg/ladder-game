@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #F8F9FA;
+    color: #212529;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-group label {
+    font-weight: 500;
+    font-size: 1em;
+}
+
+.input-group input {
+    padding: 10px;
+    border: 1px solid #DEE2E6;
+    border-radius: 8px;
+    font-size: 1em;
+    width: 80px;
+    text-align: center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #4A69E2;
+    box-shadow: 0 0 0 3px rgba(74, 105, 226, 0.15);
+}
+
+button {
+    background-color: #4A69E2;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #3b54b5;
+    transform: translateY(-2px);
+}
+
+button:disabled {
+    background-color: #CED4DA;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.ladder-container {
+    margin: 30px 0;
+    padding: 20px 0;
+    min-height: 350px;
+    position: relative;
+}
+
+#ladder {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.ladder-line {
+    position: absolute;
+}
+
+.ladder-line.vertical {
+    width: 3px;
+    background-color: #E9ECEF;
+}
+
+.ladder-line.horizontal {
+    height: 3px;
+    background-color: #E9ECEF;
+}
+
+.player, .prize {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 14px;
+    border-radius: 50%;
+    background-color: #FFFFFF;
+    border: 2px solid #DEE2E6;
+    transition: all 0.2s ease;
+    z-index: 20;
+    padding: 5px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player {
+    cursor: pointer;
+}
+
+.player:hover {
+    border-color: #4A69E2;
+    transform: scale(1.05);
+}
+
+.player.selected {
+    background-color: #4A69E2;
+    color: white;
+    border-color: #4A69E2;
+    transform: scale(1.1);
+    font-weight: 700;
+}
+
+.player.editing, .prize.editing {
+    background: #fff;
+    color: #333;
+    cursor: text;
+    border: 2px dashed #4A69E2;
+}
+
+.game-info {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.game-info button {
+    margin: 0 10px;
+}
+
+.result {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background: #F8F9FA;
+    border-radius: 12px;
+    border: 1px solid #DEE2E6;
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.result.show {
+    display: block;
+}
+
+.result h3 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+}
+
+.result p {
+    font-size: 1.2em;
+}
+
+.player.highlight, .prize.highlight {
+    background-color: #FF9F43;
+    color: white;
+    border-color: #FF9F43;
+    font-weight: 700;
+}
+
+.path-trace {
+    position: absolute;
+    background: #FF9F43;
+    z-index: 10;
+    border-radius: 2px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    h1 {
+        font-size: 1.8em;
+    }
+}
