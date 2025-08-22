@@ -49,7 +49,7 @@ class LadderGame {
             el.textContent = player;
             el.style.left = `${startX + index * spacing - 30}px`;
             el.style.top = '0px';
-            el.onclick = () => this.selectPlayer(index);
+            el.onclick = () => this.onPlayerClick(index);
             el.ondblclick = () => this.makeEditable(el, 'player', index);
             ladderContainer.appendChild(el);
         });
@@ -115,13 +115,24 @@ class LadderGame {
         });
     }
 
-    selectPlayer(index) {
-        if (this.gameStarted) return;
-        if (this.selectedPlayer !== null) {
-            document.querySelectorAll('.player')[this.selectedPlayer].classList.remove('selected');
+    onPlayerClick(index) {
+        if (!this.gameStarted) {
+            if (this.selectedPlayer !== null) {
+                document.querySelectorAll('.player')[this.selectedPlayer].classList.remove('selected');
+            }
+            this.selectedPlayer = index;
+            document.querySelectorAll('.player')[index].classList.add('selected');
+            return;
         }
-        this.selectedPlayer = index;
-        document.querySelectorAll('.player')[index].classList.add('selected');
+
+        document.querySelectorAll('.path-trace').forEach(el => el.remove());
+        document.querySelectorAll('.player, .prize').forEach(el => el.classList.remove('highlight'));
+        this.hideResult();
+        document.getElementById('showAllResults').style.display = 'none';
+        document.getElementById('showAllResults').disabled = false;
+
+        const result = this.calculateResult(index);
+        this.animatePath(result);
     }
 
     makeEditable(element, type, index) {
@@ -148,22 +159,11 @@ class LadderGame {
     }
 
     startGame() {
-        if (this.selectedPlayer === null) {
-            alert('참가자를 선택해주세요!');
-            return;
-        }
-
         document.querySelectorAll('.ladder-line.horizontal.hidden').forEach(line => {
             line.classList.remove('hidden');
         });
-
         this.gameStarted = true;
-        document.getElementById('startGame').disabled = true;
-
-        setTimeout(() => {
-            const result = this.calculateResult(this.selectedPlayer);
-            this.animatePath(result);
-        }, 500); // 가로선 fade-in 시간 기다리기
+        document.getElementById('startGame').style.display = 'none';
     }
 
     calculateResult(playerIndex) {
@@ -306,6 +306,7 @@ class LadderGame {
         document.querySelectorAll('.player, .prize').forEach(el => el.classList.remove('highlight'));
         document.getElementById('showAllResults').style.display = 'none';
         document.getElementById('showAllResults').disabled = false;
+        document.getElementById('startGame').style.display = 'inline-block';
     }
 
     hideResult() {
@@ -319,8 +320,6 @@ class LadderGame {
 
     resetGame() {
         this.clearLadder();
-        document.getElementById('startGame').disabled = true;
-        this.selectedPlayer = null;
         generateLadder();
     }
 }
