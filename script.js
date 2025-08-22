@@ -107,7 +107,7 @@ class LadderGame {
 
         this.rungs.forEach(({ y, col }) => {
             const line = document.createElement('div');
-            line.className = 'ladder-line horizontal';
+            line.className = 'ladder-line horizontal hidden';
             line.style.top = `${y}px`;
             line.style.left = `${startX + col * spacing}px`;
             line.style.width = `${spacing}px`;
@@ -152,10 +152,18 @@ class LadderGame {
             alert('참가자를 선택해주세요!');
             return;
         }
+
+        document.querySelectorAll('.ladder-line.horizontal.hidden').forEach(line => {
+            line.classList.remove('hidden');
+        });
+
         this.gameStarted = true;
         document.getElementById('startGame').disabled = true;
-        const result = this.calculateResult(this.selectedPlayer);
-        this.animatePath(result);
+
+        setTimeout(() => {
+            const result = this.calculateResult(this.selectedPlayer);
+            this.animatePath(result);
+        }, 500); // 가로선 fade-in 시간 기다리기
     }
 
     calculateResult(playerIndex) {
@@ -251,12 +259,37 @@ class LadderGame {
     completeGame(result) {
         this.showResult(result);
         this.highlightResult(result);
+        document.getElementById('showAllResults').style.display = 'inline-block';
     }
 
     showResult(result) {
         const resultDiv = document.getElementById('result');
         resultDiv.innerHTML = `<h3>🎉 게임 결과 🎉</h3><p><strong>${result.player}</strong> 님은 <strong>${result.prize}</strong>!</p>`;
         resultDiv.classList.add('show');
+    }
+
+    showAllResults() {
+        const resultDiv = document.getElementById('result');
+        let resultsHTML = '<h3>🎉 전체 게임 결과 🎉</h3><ul class="result-list">';
+
+        for (let i = 0; i < this.players.length; i++) {
+            const result = this.calculateResult(i);
+            resultsHTML += `<li><span>${result.player}</span> ➔ <span>${result.prize}</span></li>`;
+        }
+        resultsHTML += '</ul>';
+        resultDiv.innerHTML = resultsHTML;
+        resultDiv.classList.add('show');
+
+        document.querySelectorAll('.path-trace').forEach(el => el.remove());
+        document.querySelectorAll('.player, .prize').forEach(el => el.classList.remove('highlight'));
+
+        for (let i = 0; i < this.players.length; i++) {
+            document.querySelectorAll('.player')[i].classList.add('highlight');
+            const result = this.calculateResult(i);
+            document.querySelectorAll('.prize')[result.prizeIndex].classList.add('highlight');
+        }
+
+        document.getElementById('showAllResults').disabled = true;
     }
 
     highlightResult(result) {
@@ -271,6 +304,8 @@ class LadderGame {
         this.selectedPlayer = null;
         this.hideResult();
         document.querySelectorAll('.player, .prize').forEach(el => el.classList.remove('highlight'));
+        document.getElementById('showAllResults').style.display = 'none';
+        document.getElementById('showAllResults').disabled = false;
     }
 
     hideResult() {

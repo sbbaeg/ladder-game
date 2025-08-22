@@ -118,6 +118,11 @@ button:disabled {
 .ladder-line.horizontal {
     height: 3px;
     background-color: #E9ECEF;
+    transition: opacity 0.5s ease;
+}
+
+.ladder-line.horizontal.hidden {
+    opacity: 0;
 }
 
 .player, .prize {
@@ -209,6 +214,32 @@ button:disabled {
     background: #FF9F43;
     z-index: 10;
     border-radius: 2px;
+}
+
+.result-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.result-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+.result-list li span:first-child {
+    font-weight: 500;
+    color: #4A69E2;
+}
+
+.result-list li span:last-child {
+    font-weight: 700;
+    color: #212529;
 }
 
 @keyframes fadeIn {
